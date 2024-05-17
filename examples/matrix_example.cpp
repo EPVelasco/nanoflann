@@ -34,6 +34,18 @@
 
 constexpr int SAMPLES_DIM = 15;
 
+template <typename T>
+void printVector(const std::vector<T>& vec) {
+    std::cout << "[";
+    for (size_t i = 0; i < vec.size(); ++i) {
+        std::cout << vec[i];
+        if (i != vec.size() - 1) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << "]" << std::endl;
+}
+
 template <typename Der>
 void generateRandomPointCloud(
     Eigen::MatrixBase<Der>& mat, const size_t N, const size_t dim,
@@ -109,10 +121,19 @@ void kdtree_demo(const size_t nSamples, const size_t dim)
     resultSet.init(&ret_indexes[0], &out_dists_sqr[0]);
     mat_index.index_->findNeighbors(resultSet, &query_pt[0]);
 
+    printVector(query_pt);
+
+    std::cout<<"Query: "<<query_pt[0]<<std::endl;
+
+
     std::cout << "knnSearch(nn=" << num_results << "): \n";
-    for (size_t i = 0; i < resultSet.size(); i++)
+    for (size_t i = 0; i < resultSet.size(); i++){
         std::cout << "ret_index[" << i << "]=" << ret_indexes[i]
                   << " out_dist_sqr=" << out_dists_sqr[i] << std::endl;
+
+    std::cout<<"Resultado: "<<std::endl;
+    std::cout << mat.row(ret_indexes[i]) << std::endl;
+    }
 }
 
 int main(int argc, char** argv)
